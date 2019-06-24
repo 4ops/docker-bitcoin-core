@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+
+  testnet:
+    image: 4ops/bitcoin-core:v0.18.0
+    volumes:
+    - ./testnet-data:/home/bitcoin/.bitcoin
+    ports:
+    - "18332:18332"
+    - "18333:18333"
+    command:
+    - -printtoconsole
+    - -rpcuser=test_user
+    - -rpcpassword=test_password
+    - -rpcallowip=172.17.0.0/16
+    - -onlynet=ipv4
+    - -txindex
+    - -testnet
+    restart: always
+
+  mainnet:
+    image: 4ops/bitcoin-core:v0.18.0
+    volumes:
+    - ./mainnet-data:/home/bitcoin/.bitcoin
+    ports:
+    - "8332:8332"
+    - "8333:8333"
+    command:
+    - -printtoconsole
+    - -rpcuser=main_user
+    - -rpcpassword=ma1n_pAssw0rd
+    - -rpcallowip=172.17.0.0/16
+    - -onlynet=ipv4
+    - -txindex
+    restart: always

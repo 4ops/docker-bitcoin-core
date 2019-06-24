@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    k8s-app: bitcoin-core
+    blockchain: testnet
+  name: bitcoin-core-testnet
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      k8s-app: bitcoin-core
+      blockchain: testnet
+  serviceName: bitcoin-core-testnet
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        k8s-app: bitcoin-core
+        blockchain: testnet
+    spec:
+      containers:
+      - args:
+        - "-printtoconsole"
+        - "-rpcuser=$(RPCUSER)"
+        - "-rpcpassword=$(RPCPASSWORD)"
+        - "-rpcallowip=10.0.0.0/8"
+        - "-txindex"
+        - "-testnet"
+        env:
+        - name: RPCUSER
+          valueFrom:
+            secretKeyRef:
+              name: bitcoin-core-testnet
+              key: RPCUSER
+        - name: RPCPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: bitcoin-core-testnet
+              key: RPCPASSWORD
+        image: 4ops/bitcoin-core:v0.18.0
+        livenessProbe:
+          tcpSocket:
+            port: 18333
+          timeoutSeconds: 1
+        name: bitcoin-core
+        ports:
+        - containerPort: 18332
+          name: rpc
+          protocol: TCP
+        - containerPort: 18333
+          name: p2p
+          protocol: TCP
+        resources:
+          requests:
+            cpu: 2000m
+            memory: 2Gi
+          limits:
+            cpu: 2000m
+            memory: 2Gi
+        volumeMounts:
+        - mountPath: /home/bitcoin/.bitcoin
+          name: data
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 50Gi
+      storageClassName: standard

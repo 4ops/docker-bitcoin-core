@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bitcoin-core-testnet
+spec:
+  ports:
+  - name: rpc
+    port: 80
+    protocol: TCP
+    targetPort: 18332
+  selector:
+    k8s-app: bitcoin-core
+    blockchain: testnet
+  sessionAffinity: None
+  type: ClusterIP
+# If you need to expose p2p port, create service by example below.
+# See additional info: https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: bitcoin-core-testnet-p2p
+# spec:
+#   ports:
+#   - name: p2p
+#     port: 18333
+#     protocol: TCP
+#     targetPort: 18333
+#   selector:
+#     k8s-app: bitcoin-core
+#     blockchain: testnet
+#   sessionAffinity: None
+#   type: LoadBalancer
