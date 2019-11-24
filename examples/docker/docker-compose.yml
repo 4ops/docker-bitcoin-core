@@ -3,7 +3,7 @@ version: '3'
 services:
 
   testnet:
-    image: 4ops/bitcoin-core:v0.18.1
+    image: 4ops/bitcoin-core:v0.19.0.1
     volumes:
     - ./testnet-data:/home/bitcoin/.bitcoin
     ports:
@@ -20,7 +20,7 @@ services:
     restart: always
 
   mainnet:
-    image: 4ops/bitcoin-core:v0.18.1
+    image: 4ops/bitcoin-core:v0.19.0.1
     volumes:
     - ./mainnet-data:/home/bitcoin/.bitcoin
     ports:

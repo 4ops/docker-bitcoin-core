@@ -1,11 +1,11 @@
-FROM 4ops/alpine-glibc:3.9 AS build
+FROM 4ops/alpine-glibc:3.10 AS build
 
 RUN apk --no-cache add gnupg
 RUN gpg --batch --recv-keys 90C8019E36C2E964
 
 ARG BITCOIN_VERSION
 
-ENV BITCOIN_VERSION=${BITCOIN_VERSION:-0.18.1}
+ENV BITCOIN_VERSION=${BITCOIN_VERSION:-0.19.0.1}
 ENV BITCOIN_URL="https://bitcoin.org/bin/bitcoin-core-${BITCOIN_VERSION}"
 ENV BITCOIN_PACKAGE="bitcoin-${BITCOIN_VERSION}-x86_64-linux-gnu.tar.gz"
 
@@ -21,7 +21,7 @@ RUN mv "bitcoin-${BITCOIN_VERSION}/bin/bitcoin-tx" /install/bin
 
 COPY docker-entrypoint.sh /install/entrypoint.sh
 
-FROM 4ops/alpine-glibc:3.9 AS release
+FROM 4ops/alpine-glibc:3.10 AS release
 
 ENV BITCOIN_DATA=/home/bitcoin/.bitcoin
 

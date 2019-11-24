@@ -39,7 +39,7 @@ spec:
             secretKeyRef:
               name: bitcoin-core-testnet
               key: RPCPASSWORD
-        image: 4ops/bitcoin-core:v0.18.1
+        image: 4ops/bitcoin-core:v0.19.0.1
         livenessProbe:
           tcpSocket:
             port: 18333
